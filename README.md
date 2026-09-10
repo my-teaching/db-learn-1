@@ -77,6 +77,25 @@ Orders    1 ─── N OrderItems
 Products  1 ─── N OrderItems
 ```
 
+### IDENTITY в OLTP
+
+В данной работе поля `CustomerID`, `ProductID`, `OrderID` и `OrderItemID`
+являются первичными ключами (`PRIMARY KEY`) и настраиваются как `IDENTITY`.
+
+При обычной вставке SQL Server генерирует значения `IDENTITY` автоматически.
+Однако `seed.sql` содержит фиксированные значения ID, поэтому для их явной
+вставки можно использовать:
+
+```sql
+SET IDENTITY_INSERT TableName ON;
+
+-- INSERT ...
+
+SET IDENTITY_INSERT TableName OFF;
+```
+В одной сессии SQL Server `IDENTITY_INSERT` может быть включён (`ON`) одновременно только для одной таблицы. Перед включением для другой таблицы необходимо выполнить `OFF` для предыдущей.
+
+
 ### Почему `Price` есть и в Products, и в OrderItems
 
 `Products.Price` — **текущая цена каталога**.
